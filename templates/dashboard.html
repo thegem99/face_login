@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    height: 100vh;
+    background: #0b0f19;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    color: white;
+}
+
+/* animated gradient background */
+body::before {
+    content: "";
+    position: absolute;
+    width: 900px;
+    height: 900px;
+    background: radial-gradient(circle at 20% 20%, #3b82f6, transparent 40%),
+                radial-gradient(circle at 80% 30%, #9333ea, transparent 40%),
+                radial-gradient(circle at 50% 80%, #22c55e, transparent 40%);
+    filter: blur(120px);
+    opacity: 0.5;
+    animation: float 10s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+    from { transform: translate(-40px, -40px); }
+    to { transform: translate(40px, 40px); }
+}
+
+/* dashboard container */
+.container {
+    width: 900px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    z-index: 10;
+}
+
+/* glass card */
+.card {
+    padding: 25px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* big welcome */
+.welcome {
+    grid-column: span 2;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+p {
+    color: rgba(255,255,255,0.6);
+    margin-top: 5px;
+}
+
+/* status badge */
+.badge {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    background: rgba(34,197,94,0.2);
+    color: #22c55e;
+}
+
+/* buttons */
+button {
+    margin-top: 15px;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    background: #3b82f6;
+    color: white;
+    transition: 0.25s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(59,130,246,0.3);
+}
+
+/* logout */
+.logout {
+    background: #ef4444;
+}
+
+/* stats box */
+.stat {
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.small {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- WELCOME CARD -->
+    <div class="card welcome">
+        <h1>Welcome 👋 {{ session['user'] }}</h1>
+        <p>You have successfully unlocked Face ID secured system</p>
+
+        <div class="badge">Face ID Verified ✔</div>
+
+        <br>
+
+        <button onclick="location.href='/login-page'">Re-scan Face</button>
+        <button class="logout" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- SECURITY STATUS -->
+    <div class="card">
+        <h3>Security Status</h3>
+        <div class="stat">99.9%</div>
+        <div class="small">Face Match Accuracy</div>
+    </div>
+
+    <!-- DEVICE INFO -->
+    <div class="card">
+        <h3>Session Info</h3>
+        <div class="stat">Active</div>
+        <div class="small">Secure Flask Session</div>
+    </div>
+
+</div>
+
+<script>
+function logout(){
+    fetch("/logout", {method:"POST"})
+    .then(()=>window.location="/login-page");
+}
+</script>
+
+</body>
+</html>
